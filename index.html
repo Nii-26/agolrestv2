@@ -45,6 +45,7 @@
         const simpleMarkerSymbol = {
           type: "simple-marker",
           color: [0, 0, 139], // Color of blues rock
+          style: "diamond",
           outline: {
             color: [255, 255, 255], // White
             width: 1
@@ -52,16 +53,20 @@
           size: "16px"
         };
 
+        const popupTemplate = {
+          title: "{Name}",
+          content: "The Texas State Capitol is located in Austin, Texas."
+        };
+
+        const attributes = {
+          Name: "Texas State Capitol"
+        };
+
         const pointGraphic = new Graphic({
           geometry: point,
           symbol: simpleMarkerSymbol,
-          attributes: {
-            Name: "Texas State Capitol"
-          },
-          popupTemplate: {
-            title: "{Name}",
-            content: "The Texas State Capitol is located in Austin, Texas."
-          }
+          attributes: attributes,
+          popupTemplate: popupTemplate
         });
 
         graphicsLayer.add(pointGraphic);
