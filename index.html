@@ -71,10 +71,19 @@
         });
 
         graphicsLayer.add(pointGraphic);
+
+        const popupLaw = {
+          title: "{NAME}",
+          content: "<b>Name:</b> {NAME}<br><b>Address:</b> {ADDRESS}"
+        };
+
         const usaeduLayer = new FeatureLayer({
-         url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Structures_Law_Enforcement_v1/FeatureServer"
-});
-map.add(usaeduLayer);
+          url: "https://services2.arcgis.com/FiaPA4ga0iQKduv3/arcgis/rest/services/Structures_Law_Enforcement_v1/FeatureServer",
+          outFields: ["NAME", "ADDRESS"],
+          popupTemplate: popupLaw
+        });
+
+        map.add(usaeduLayer);
     });
   </script>
 
