@@ -74,12 +74,23 @@
 
         const airportsLayerUrl = "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/Airports_NA/FeatureServer";
         const airportIconUrl = "https://raw.githubusercontent.com/Nii-26/agol/main/local_airport_24dp_1F1F1F.png"; // GitHub icon source
+        const heliportIconUrl = "https://raw.githubusercontent.com/Nii-26/agol/main/helicopter-copter-black-icon.png";
 
         const airportRenderer = {
           type: "simple",
           symbol: {
             type: "picture-marker",
             url: airportIconUrl,
+            width: "18px",
+            height: "18px"
+          }
+        };
+
+        const heliportRenderer = {
+          type: "simple",
+          symbol: {
+            type: "picture-marker",
+            url: heliportIconUrl,
             width: "18px",
             height: "18px"
           }
@@ -105,13 +116,22 @@
         };
 
         const airportLayer = new FeatureLayer({
-          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/US_Airports/FeatureServer",
+          url: airportsLayerUrl,
           renderer: airportRenderer,
           definitionExpression: "Fac_Type = 'AIRPORT'",
           labelingInfo: [airportLabels]
         });
 
         map.add(airportLayer);
+
+        const heliportLayer = new FeatureLayer({
+          url: airportsLayerUrl,
+          renderer: heliportRenderer,
+          definitionExpression: "Fac_Type = 'HELIPORT'",
+          labelingInfo: [airportLabels]
+        });
+
+        map.add(heliportLayer);
 
         const popupLaw = {
           title: "{NAME}",
