@@ -21,8 +21,11 @@
       "esri/layers/GraphicsLayer",
       "esri/layers/FeatureLayer",
       "esri/widgets/Editor",
-      "esri/widgets/Expand"
-    ], function (esriConfig,Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor, Expand) {
+      "esri/widgets/Expand",
+      "esri/widgets/BasemapGallery",
+      "esri/widgets/Locate",
+      "esri/widgets/Search"
+    ], function (esriConfig,Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor, Expand, BasemapGallery, Locate, Search) {
 
       esriConfig.apiKey = "AAPTajaiUN-l-Y5iZ6SJzRW2TrA..m77zVLz8qGj9i_I3EY3F8Xk6dn3B8qdgfg-gOj71TjVV0cBg24kogjcanRc9hB0dnx2U2BVXAfF6qmCt697nFz41ku7Bmh73aBA42Pt3g7XTB8Z1Rj8LRsDBEQ4Qsp31xAZOIgb3xBoPBYjxJRca-8kLvUpoJ_uxScDUo_4op0o82q-5JsDlBhmU9bmuS4UrJkatYMvgHQ1soi97xgxRQ3Rbaf00hwvocEDURchwXnW5OwAp51YxA3-fxQII21enwUGK2dPaWSRFWFVJ-ijkeg..AT1_bryZT1WS";
       const map = new Map({
@@ -153,9 +156,38 @@
 
         map.add(usaeduLayer);
         //adding the const for the feature layer
+       const myAirportRenderer = {
+         type: "simple",
+         symbol: {
+           type: "picture-marker",
+           url: airportIconUrl,
+           width: "20px",
+           height: "20px"
+         }
+       };
+
+       const airportCodeLabels = {
+         symbol: {
+           type: "text",
+           color: "#000000",
+           haloColor: "#FFFFFF",
+           haloSize: "1px",
+           font: {
+             size: "10px",
+             family: "Noto Sans",
+             weight: "bold"
+           }
+         },
+         labelPlacement: "above-center",
+         labelExpressionInfo: {
+           expression: "$feature.AirportCode"
+         }
+       };
+
        const myAirports = new FeatureLayer({
          url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/My_Airport_US/FeatureServer",
- 
+         renderer: myAirportRenderer,
+         labelingInfo: [airportCodeLabels],
   //adding the popup here
         outFields: ["AirportCode"],
 
@@ -183,6 +215,32 @@
           group: "primary"  // only one widget in this group opens at a time
         });
         view.ui.add(editorExpand, "top-right");
+
+        // Create BasemapGallery widget
+        const basemapGallery = new BasemapGallery({
+          view: view
+        });
+
+        // Wrap BasemapGallery in Expand widget
+        const basemapExpand = new Expand({
+          view: view,
+          content: basemapGallery,
+          expandIcon: "basemap",
+          group: "primary"
+        });
+        view.ui.add(basemapExpand, "top-right");
+
+        // Create Locate widget with HTML5 geolocation
+        const locate = new Locate({
+          view: view
+        });
+        view.ui.add(locate, "top-left");
+
+        // Create Search widget for coordinates, addresses, and landmarks
+        const searchWidget = new Search({
+          view: view
+        });
+        view.ui.add(searchWidget, "top-right");
       });
     });
   </script>
