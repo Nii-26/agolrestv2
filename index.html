@@ -19,8 +19,9 @@
       "esri/views/MapView",
       "esri/Graphic",  
       "esri/layers/GraphicsLayer",
-      "esri/layers/FeatureLayer"
-    ], function (esriConfig,Map, MapView, Graphic, GraphicsLayer, FeatureLayer) {
+      "esri/layers/FeatureLayer",
+      "esri/widgets/Editor"
+    ], function (esriConfig,Map, MapView, Graphic, GraphicsLayer, FeatureLayer, Editor) {
 
       esriConfig.apiKey = "AAPTajaiUN-l-Y5iZ6SJzRW2TrA..m77zVLz8qGj9i_I3EY3F8Xk6dn3B8qdgfg-gOj71TjVV0cBg24kogjcanRc9hB0dnx2U2BVXAfF6qmCt697nFz41ku7Bmh73aBA42Pt3g7XTB8Z1Rj8LRsDBEQ4Qsp31xAZOIgb3xBoPBYjxJRca-8kLvUpoJ_uxScDUo_4op0o82q-5JsDlBhmU9bmuS4UrJkatYMvgHQ1soi97xgxRQ3Rbaf00hwvocEDURchwXnW5OwAp51YxA3-fxQII21enwUGK2dPaWSRFWFVJ-ijkeg..AT1_bryZT1WS";
       const map = new Map({
@@ -150,6 +151,32 @@
         });
 
         map.add(usaeduLayer);
+        //adding the const for the feature layer
+       const myAirports = new FeatureLayer({
+         url: "https://services.arcgis.com/HRPe58bUyBqyyiCt/arcgis/rest/services/My_Airport_US/FeatureServer",
+ 
+  //adding the popup here
+        outFields: ["AirportCode"],
+
+});
+
+//adding the feature layer to the map
+        map.add(myAirports);
+
+        // Set the point layer's LayerInfo
+        const pointInfos = {
+          layer: myAirports
+        };
+
+        // Begin Editor constructor
+        const editor = new Editor({
+          view: view,
+          layerInfos: [pointInfos]
+        });
+        // End Editor constructor
+
+        // Add the widget to the view
+        view.ui.add(editor, "top-right");
       });
     });
   </script>
